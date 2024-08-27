@@ -1,23 +1,47 @@
-import { STF, Transitions } from "@stackr/sdk/machine";
-import { CounterState } from "./state";
+import { REQUIRE, STF, Transitions } from "@stackr/sdk/machine";
+import { hashMessage } from "ethers";
+import { AppState } from "./machine";
 
-const increment: STF<CounterState> = {
-  handler: ({ state, emit }) => {
-    state += 1;
-    emit({ name: "ValueAfterIncrement", value: state });
+export type StartGameInput = {
+  startTimestamp: number;
+};
+
+export type EndGameInput = {
+  gameId: string;
+  timestamp: number;
+  score: number;
+  gameInputs: string;
+};
+
+const startGame: STF<AppState, StartGameInput> = {
+  handler: ({ state, inputs, msgSender, block, emit }) => {
+    const { startTimestamp } = inputs;
+    const gameId = hashMessage(
+      `${msgSender}::${startTimestamp}::${block.timestamp}::${
+        Object.keys(state.games).length
+      }::${startTimestamp}`
+    );
+
+    state.games[gameId] = {
+      height: 0,
+      player: String(msgSender),
+    };
+
+    emit({
+      name: "GameCreated",
+      value: gameId,
+    });
+    return state;
+  },
+};
+const endGame: STF<AppState, EndGameInput> = {
+  handler: ({ state, inputs, msgSender }) => {
+
     return state;
   },
 };
 
-const decrement: STF<CounterState> = {
-  handler: ({ state, emit }) => {
-    state -= 1;
-    emit({ name: "ValueAfterDecrement", value: state });
-    return state;
-  },
-};
-
-export const transitions: Transitions<CounterState> = {
-  increment,
-  decrement,
+export const transitions: Transitions<AppState> = {
+  startGame,
+  endGame,
 };

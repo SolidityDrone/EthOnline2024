@@ -1,21 +1,61 @@
 import { State } from "@stackr/sdk/machine";
-import { solidityPackedKeccak256 } from "ethers";
+import { keccak256, solidityPackedKeccak256, ZeroHash } from "ethers";
+import { MerkleTree } from "merkletreejs";
 
-export class CounterState extends State<number> {
-  constructor(state: number) {
+interface GameState {
+  score: number;
+  height: number;
+  player: string;
+}
+
+export interface RawState {
+  games: Array<GameState & { id: string }>;
+}
+
+export interface WrappedState {
+  games: Record<string, GameState>;
+}
+
+export class AppState extends State<RawState, WrappedState> {
+  constructor(state: RawState) {
     super(state);
   }
 
-  // Here since the state is simple and doesn't need wrapping, we skip the transformers to wrap and unwrap the state
+  transformer() {
+    return {
+      wrap: () => {
+        const games = this.state.games.reduce<WrappedState["games"]>(
+          (acc, game) => {
+            const { id, ...rest } = game;
+            acc[id] = { ...rest };
+            return acc;
+          },
+          {}
+        );
+        return { games };
+      },
+      unwrap: (wrappedState: WrappedState) => {
+        const games = Object.keys(wrappedState.games).map((id) => ({
+          id,
+          ...wrappedState.games[id],
+        }));
+        return { games };
+      },
+    };
+  }
 
-  // transformer() {
-  //   return {
-  //     wrap: () => this.state,
-  //     unwrap: (wrappedState: number) => wrappedState,
-  //   };
-  // }
-
-  getRootHash() {
-    return solidityPackedKeccak256(["uint256"], [this.state]);
+  getRootHash(): string {
+    const leaves = this.state.games.map(
+      ({ id, height, player }) =>
+        solidityPackedKeccak256(
+          ["string", "uint256", "address"],
+          [id, height, player]
+        )
+    );
+    if (leaves.length === 0) {
+      return ZeroHash;
+    }
+    const tree = new MerkleTree(leaves, keccak256);
+    return tree.getHexRoot();
   }
 }
