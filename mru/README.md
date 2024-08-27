@@ -1,8 +1,8 @@
-# EGO
-
-Project initialized using [@stackr/sdk](https://www.stackrlabs.xyz/)
+# EthOnline2024
+Not sure what i'm building. For now i'm just testing stackr and figure out how to handle it
 
 ## Project structure
+Project initialized using [@stackr/sdk](https://www.stackrlabs.xyz/)
 
 ```bash
 .
