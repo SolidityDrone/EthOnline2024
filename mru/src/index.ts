@@ -37,7 +37,6 @@ const mru = await MicroRollup({
 const main = async () => {
   await mru.init();
 
-
   const inputs = {
     startTimestamp: 1
   }

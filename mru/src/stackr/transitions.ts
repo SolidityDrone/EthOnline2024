@@ -34,6 +34,7 @@ const startGame: STF<AppState, StartGameInput> = {
     return state;
   },
 };
+
 const endGame: STF<AppState, EndGameInput> = {
   handler: ({ state, inputs, msgSender }) => {
 

@@ -1,0 +1,6 @@
+export const SITE_EMOJI = '⚡'
+export const SITE_NAME = 'EthOnline2024'
+export const SITE_INFO = 'EthOnline2024 Project by Drone'
+export const SITE_DESCRIPTION = 'IDK'
+export const SITE_URL = 'https://no-site.com'
+export const SOCIAL_GITHUB = 'SolidityDrone/Ethonline2024'
