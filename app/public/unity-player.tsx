@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import "./UnityPlayerApp.css"; // Make sure this path is correct
+import "./unity-player.css"; // Make sure this path is correct
 
 export function UnityPlayerApp() {
   const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
