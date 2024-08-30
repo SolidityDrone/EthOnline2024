@@ -14,9 +14,9 @@ export function UnityPlayerApp() {
 
   const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
     loaderUrl: "./Build/VerifiableKartikAdventuresBuild.loader.js",
-    dataUrl: "./Build/VerifiableKartikAdventuresBuild.data",
-    frameworkUrl: "./Build/VerifiableKartikAdventuresBuild.framework.js",
-    codeUrl: "./Build/VerifiableKartikAdventuresBuild.wasm",
+    dataUrl: "./Build/VerifiableKartikAdventuresBuild.data.br",
+    frameworkUrl: "./Build/VerifiableKartikAdventuresBuild.framework.js.br",
+    codeUrl: "./Build/VerifiableKartikAdventuresBuild.wasm.br",
   });
 
   const loadingPercentage = Math.round(loadingProgression * 100);
