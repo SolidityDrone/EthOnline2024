@@ -1,0 +1,71 @@
+/* Reset body margin and padding */
+body {
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Base styles for the Unity container */
+  #unity-container {
+    position: absolute; /* Allows for absolute positioning */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centers the container */
+  }
+  
+  /* Styles specific to desktop view */
+  .unity-desktop {
+    position: absolute;
+  }
+  
+  /* Styles specific to mobile view */
+  .unity-mobile {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Canvas background */
+  #unity-canvas {
+    background: #231F20;
+  }
+  
+  /* Loading bar styles */
+  #unity-loading-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Initially hidden, shown when loading */
+  }
+ 
+  
+  /* Footer styles */
+  #unity-footer {
+    position: relative;
+  }
+  
+  .unity-mobile #unity-footer {
+    display: none; /* Hide footer on mobile */
+  }
+
+  
+  #unity-build-title {
+    float: right;
+    margin-right: 10px;
+    line-height: 38px;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+  }
+  
+
+  /* Warning styles */
+  #unity-warning {
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%);
+    background: white;
+    padding: 10px;
+    display: none; /* Initially hidden, shown when needed */
+  }
+  

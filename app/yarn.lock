@@ -4500,6 +4500,11 @@ next@^14.1.4:
     "@next/swc-win32-ia32-msvc" "14.2.5"
     "@next/swc-win32-x64-msvc" "14.2.5"
 
+nextjs-unity-webgl@^8.6.0:
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/nextjs-unity-webgl/-/nextjs-unity-webgl-8.6.0.tgz#ab3f1d7bdd4d060e9a39f2e37eab4aaf9230d17d"
+  integrity sha512-xxgZQ6qBs/g9k2kSlOh49UKR4Zpvnunz2lFUEUivgwWblK2N6V3wYlSWHypHegxnr1lJbzYWDahm0uvPDAv0Aw==
+
 node-addon-api@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.2.tgz#432cfa82962ce494b132e9d72a15b29f71ff5d32"
@@ -5157,6 +5162,11 @@ react-toastify@^10.0.5:
   integrity sha512-mNKt2jBXJg4O7pSdbNUfDdTsK9FIdikfsIE/yUCxbAEXl4HMyJaivrVFcn3Elvt5xvCQYhUZm+hqTIu1UXM3Pw==
   dependencies:
     clsx "^2.1.0"
+
+react-unity-webgl@^9.5.2:
+  version "9.5.2"
+  resolved "https://registry.yarnpkg.com/react-unity-webgl/-/react-unity-webgl-9.5.2.tgz#96e627ddbe8c002fc10fdfd07756f5824547e15f"
+  integrity sha512-m/vYHoIF5zNev/yxq6tBWOHg4LKcD9npHWzvIwDQcgTwKZFLnD3s7VUkueT8Z3cmrhEylCXq9P2zai28chW2Mw==
 
 react@^18.2.0:
   version "18.3.1"

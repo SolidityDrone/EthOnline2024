@@ -2,18 +2,28 @@
   "extends": "@tsconfig/next/tsconfig.json",
   "compilerOptions": {
     "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"], // Ensure that DOM and ESNext libraries are included
+    "jsx": "preserve", // Ensure JSX syntax is preserved for Next.js
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Enable interop with CommonJS modules
+    "module": "esnext", // Ensure ESNext module syntax
+    "moduleResolution": "node", // Use Node-style module resolution
+    "resolveJsonModule": true, // Allow importing JSON modules
+    "allowJs": true, // Allow JavaScript files to be compiled
+    "skipLibCheck": true, // Skip type checking of all declaration files
+    "forceConsistentCasingInFileNames": true, // Ensure consistent file casing
+    "paths": {
+      "@/*": ["./src/*"] // Set up path aliasing
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    ]
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": ["tsconfig-paths/register"] // Ensure tsconfig-paths is used
   },
-  "include": ["next-env.d.ts", "src", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "src", ".next/types/**/*.ts"], // Include TypeScript files
+  "exclude": ["node_modules"] // Exclude node_modules from TypeScript compilation
 }
