@@ -6,9 +6,9 @@ import "./unity-player.css"; // Make sure this path is correct
 export function UnityPlayerApp() {
   const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
     loaderUrl: "./Build/VerifiableKartikAdventuresBuild.loader.js",
-    dataUrl: "./Build/VerifiableKartikAdventuresBuild.data.br",
-    frameworkUrl: "./Build/VerifiableKartikAdventuresBuild.framework.js.br",
-    codeUrl: "./Build/VerifiableKartikAdventuresBuild.wasm.br",
+    dataUrl: "./Build/VerifiableKartikAdventuresBuild.data.gz",
+    frameworkUrl: "./Build/VerifiableKartikAdventuresBuild.framework.js.gz",
+    codeUrl: "./Build/VerifiableKartikAdventuresBuild.wasm.gz",
   });
 
   const loadingPercentage = Math.round(loadingProgression * 100);
