@@ -8,9 +8,10 @@ export type StartGameInput = {
 
 export type EndGameInput = {
   gameId: string;
-  timestamp: number;
+  endTimestamp: number;
   score: number;
-  gameInputs: string;
+  stages: string;
+  gameinputs: string;
 };
 
 const startGame: STF<AppState, StartGameInput> = {
@@ -23,7 +24,7 @@ const startGame: STF<AppState, StartGameInput> = {
     );
 
     state.games[gameId] = {
-      height: 0,
+      score: 0,
       player: String(msgSender),
     };
 
@@ -35,9 +36,17 @@ const startGame: STF<AppState, StartGameInput> = {
   },
 };
 
+
 const endGame: STF<AppState, EndGameInput> = {
   handler: ({ state, inputs, msgSender }) => {
+    const { gameId, endTimestamp, score, stages, gameinputs} = inputs;
+    const { games } = state;
+    // validation checks
+    REQUIRE(!!games[gameId], "GAME_NOT_FOUND");
+    REQUIRE(games[gameId].score === 0, "GAME_ALREADY_ENDED");
+    REQUIRE(games[gameId].player === String(msgSender), "UNAUTHORIZED");
 
+    games[gameId].score = score;
     return state;
   },
 };

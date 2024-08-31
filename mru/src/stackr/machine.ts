@@ -5,7 +5,7 @@ import genesisState from "../../genesis-state.json";
 import { transitions } from "./transitions";
 
 interface GameState {
-  height: number;
+  score: number;
   player: string;
 }
 
@@ -38,7 +38,7 @@ export class AppState extends State<RawState, WrappedState> {
       unwrap: (wrappedState: WrappedState) => {
         const games = Object.keys(wrappedState.games).map((id) => ({
           id,
-          height: wrappedState.games[id].height,
+          score: wrappedState.games[id].score,
           player: wrappedState.games[id].player,
         }));
         return { games };
@@ -48,10 +48,10 @@ export class AppState extends State<RawState, WrappedState> {
 
   getRootHash(): string {
     const leaves = this.state.games.map(
-      ({ id, height, player}) =>
+      ({ id, score, player}) =>
         solidityPackedKeccak256(
           ["string", "uint256", "address"],
-          [id, height, player]
+          [id, score, player]
         )
     );
     if (leaves.length === 0) {

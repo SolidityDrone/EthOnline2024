@@ -1,10 +1,16 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
 import "./unity-player.css"; // Make sure this path is correct
 import React, { Fragment, useState, useCallback, useEffect } from "react";
-import { useAccount, useSignMessage } from 'wagmi';
+import { useAccount, useSignTypedData } from 'wagmi';
+import { useAction } from "@/app/useAction";
+
 
 
 export function UnityPlayerApp() {
+const [playing, setPlaying] = useState(false);
+  const { submit } = useAction();
+  
+  
   const { unityProvider, isLoaded, loadingProgression, addEventListener, sendMessage } = useUnityContext({
     loaderUrl: "./Build/VerifiableKartikAdventuresBuild.loader.js",
     dataUrl: "./Build/VerifiableKartikAdventuresBuild.data",
@@ -12,29 +18,37 @@ export function UnityPlayerApp() {
     codeUrl: "./Build/VerifiableKartikAdventuresBuild.wasm",
   });
 
-  const  address  = useAccount().address;
-  const { signMessageAsync } = useSignMessage();
 
   const loadingPercentage = Math.round(loadingProgression * 100);
+  
+
+  const handleStartGame = async () => {
+    console.log("handleStartGame triggered");  // Add this line
+    // if (playing) {
+    //   console.log("Game already playing, skipping start.");  // Add this line
+    //   return;
+    // }
+    
+    setPlaying(true);
+    
+    try {
+      console.log("Before submit call");  // Add this line
+      const res = await submit("startGame", {
+        startTimestamp: Date.now(),
+      });
+      console.log("Submit Response:", res);  // Add this line
+      return res?.logs?.[0]?.value;
+    } catch (error) {
+      console.error("Error during game start:", error);
+    }
+  };
 
   // Function to sign data and send the StartGame message to Unity
   async function handleClickStartGame() {
     try {
-      // Example inputs data (replace with actual data)
-      const inputs = { startTimestamp: Date.now() };
-
-      // Serialize inputs (you need to make sure this matches your schema)
-      const serializedInputs = JSON.stringify(inputs);
-
-      // Sign the message
-      const signature = await signMessageAsync({
-        message: serializedInputs,
-      });
-
-      console.log("Signature:", signature);
-
-      // Send the signature and other data to Unity
-      sendMessage("Game_Manager", "StartGame", JSON.stringify({ inputs, signature }));
+      const gameId = await handleStartGame();
+      // Send Message to unity
+      sendMessage("Game_Manager", "StartGame", gameId);
 
     } catch (error) {
       console.error("Error signing message:", error);
