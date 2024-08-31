@@ -26,7 +26,7 @@ export const useAction = () => {
 
   const { domain, schemas } = info;
   const msgSender = getAddress(address);
-
+  
   const submit = async (transition: string, inputs: any) => {
     console.log("Submit function triggered for transition:", transition);
     const schema = schemas[transition];
@@ -38,17 +38,14 @@ export const useAction = () => {
 
     const { primaryType, types } = schema;
     console.log("schema", schema)
-
-    const message = { ...inputs };
-    console.log("coddio", message)
-
+    console.log("coddio", inputs)
     let signature;
     try {
       signature = await signTypedDataAsync({
         domain,
         primaryType: schemas[transition].primaryType,
         types: schemas[transition].types,
-        message,
+        message: inputs,
         account: msgSender,
       });
       console.log("Signature generated:", signature);

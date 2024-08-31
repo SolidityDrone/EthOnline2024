@@ -1,7 +1,6 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
 import "./unity-player.css"; // Make sure this path is correct
 import React, { Fragment, useState, useCallback, useEffect } from "react";
-import { useAccount, useSignTypedData } from 'wagmi';
 import { useAction } from "@/app/useAction";
 
 
