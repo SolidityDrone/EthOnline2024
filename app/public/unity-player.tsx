@@ -27,6 +27,9 @@ export function UnityPlayerApp() {
       });
       
       const gameValue = res?.logs?.[0]?.value;
+      if (gameValue) {
+        sendMessage("Game_Manager", "StartGame", "hello");
+      }
       setGame(gameValue);
       gameRef.current = gameValue;
     } catch (error) {
@@ -77,7 +80,6 @@ export function UnityPlayerApp() {
   async function handleClickStartGame() {
     try {
       await handleStartGame();
-      sendMessage("Game_Manager", "StartGame", "hello");
     } catch (error) {
       console.error("Error starting game:", error);
     }
