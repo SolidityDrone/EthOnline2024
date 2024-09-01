@@ -12,11 +12,9 @@ import { EndGameSchema, StartGameSchema } from "./stackr/schemas";
 import { machine, MACHINE_ID } from "./stackr/machine";
 import { signMessage } from "./utils";
 
-
-
 const PORT = process.env.PORT || 3210;
 
-const BOB_PRIVATE_KEY = process.env.PRIVATE_KEY; 
+const BOB_PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 const selectedWallet = new Wallet(BOB_PRIVATE_KEY!);
 
@@ -38,17 +36,16 @@ const main = async () => {
   await mru.init();
 
   const inputs = {
-    startTimestamp: 1
-  }
+    startTimestamp: 1,
+  };
 
-  
   const signature = await signMessage(selectedWallet, StartGameSchema, inputs);
   console.log(signature);
 
-
   const app = express();
   app.use(express.json({ limit: "50mb" }));
-  // allow CORS
+  
+  // Allow CORS
   app.use((_req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -62,7 +59,6 @@ const main = async () => {
   if (!stateMachine) {
     throw new Error("State machine not found");
   }
-
 
   const handleAction = async (
     transition: string,
@@ -81,7 +77,6 @@ const main = async () => {
   app.post("/:transition", async (req, res) => {
     const { transition } = req.params;
     const schema = stfSchemaMap[transition];
-
     const { inputs, signature, msgSender } = req.body;
 
     try {
@@ -126,61 +121,6 @@ const main = async () => {
       false
     );
 
-    
-  app.get("/", (_req, res) => {
-    const { state } = stateMachine;
-    return res.json(state);
-  });
-
-  app.get("/info", (_, res) => {
-    const transitionToSchema = mru.getStfSchemaMap();
-    return res.send({
-      rpcUrls: [mru.config.L1RPC],
-      signingInstructions: "signTypedData(domain, schema.types, inputs)",
-      domain: mru.config.domain,
-      transitionToSchema,
-      schemas: [StartGameSchema, EndGameSchema].reduce((acc, schema) => {
-        acc[schema.identifier] = {
-          primaryType: schema.EIP712TypedData.primaryType,
-          types: schema.EIP712TypedData.types,
-        };
-        return acc;
-      }, {} as Record<string, any>),
-    });
-  });
-
-  app.get("/leaderboard", async (_req, res) => {
-    const { state } = stateMachine;
-    const sortedheights = [...state.games].sort((a, b) => b.height - a.height);
-  
-    const players = new Set<string>();
-
-    const topTen = sortedheights
-      .filter((game) => {
-        if (players.has(game.player)) {
-          return false;
-        }
-        players.add(game.player);
-        return true;
-      })
-      .slice(0, 10);
-
-    const leaderboard = await Promise.all(
-      topTen.map(async (game) => ({
-        address: game.player,
-        height: game.height,
-      }))
-    );
-
-    return res.json(leaderboard);
-  });
-
-    await Promise.all(
-      getUniquePlayers(stateMachine.state.games).map(async (player) =>
-        player
-      )
-    );
-
     const games = actionsAndBlocks.map((actionAndBlock) => {
       const { hash, block, payload } = actionAndBlock;
       const { gameId, height } = payload;
@@ -199,13 +139,58 @@ const main = async () => {
           : null,
       };
     });
+
     return res.send(games);
   });
 
+  // Define /info route
+
+  // Define /leaderboard route
+  app.get("/leaderboard", async (_req, res) => {
+    // const { state } = stateMachine;
+    // const sortedheights = [...state.games].sort((a, b) => b.height - a.height);
+
+    // const players = new Set<string>();
+
+    // const topTen = sortedheights
+    //   .filter((game) => {
+    //     if (players.has(game.player)) {
+    //       return false;
+    //     }
+    //     players.add(game.player);
+    //     return true;
+    //   })
+    //   .slice(0, 10);
+
+    // const leaderboard = await Promise.all(
+    //   topTen.map(async (game) => ({
+    //     address: game.player,
+    //     height: game.height,
+    //   }))
+    // );
+
+    // return res.json(leaderboard);
+  });
+  app.get("/info", (_, res) => {
+    const transitionToSchema = mru.getStfSchemaMap();
+    return res.send({
+      rpcUrls: [mru.config.L1RPC],
+      signingInstructions: "signTypedData(domain, schema.types, inputs)",
+      domain: mru.config.domain,
+      transitionToSchema,
+      schemas: [StartGameSchema, EndGameSchema].reduce((acc, schema) => {
+        acc[schema.identifier] = {
+          primaryType: schema.EIP712TypedData.primaryType,
+          types: schema.EIP712TypedData.types,
+        };
+        return acc;
+      }, {} as Record<string, any>),
+    });
+  });
+  // Start the server
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 };
-
 
 main();

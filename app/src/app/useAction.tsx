@@ -23,14 +23,14 @@ export const useAction = () => {
   if (!address || !info) {
     return { submit: () => Promise.resolve() };
   }
-
+  
   const { domain, schemas } = info;
   const msgSender = getAddress(address);
-  
+
   const submit = async (transition: string, inputs: any) => {
-    console.log("Submit function triggered for transition:", transition);
+    console.log("Submit function triggered for transition:");
     const schema = schemas[transition];
-    
+
     if (!schema) {
       console.error(`Schema for transition "${transition}" not found.`);
       return;
@@ -38,14 +38,17 @@ export const useAction = () => {
 
     const { primaryType, types } = schema;
     console.log("schema", schema)
-    console.log("coddio", inputs)
+
+    const message = { ...inputs };
+    console.log("coddio", message)
+
     let signature;
     try {
       signature = await signTypedDataAsync({
         domain,
         primaryType: schemas[transition].primaryType,
         types: schemas[transition].types,
-        message: inputs,
+        message,
         account: msgSender,
       });
       console.log("Signature generated:", signature);

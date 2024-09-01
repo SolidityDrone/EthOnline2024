@@ -5,7 +5,7 @@ export const StartGameSchema = new ActionSchema("startGame", {
 });
 
 export const EndGameSchema = new ActionSchema("endGame", {
-  gameId: SolidityType.UINT,
+  gameId: SolidityType.STRING,
   endTimestamp: SolidityType.UINT, 
   score: SolidityType.UINT,
   stages: SolidityType.STRING,

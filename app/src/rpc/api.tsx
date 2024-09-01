@@ -13,7 +13,6 @@ const submitAction = async (transition: string, payload: any) => {
 };
 
 const fetchInfo = async () => {
-    console.log("started fetchInfo")
   try {
     const response = await fetch(`${API_URL}/info`);
     if (!response.ok) {
