@@ -14,9 +14,7 @@ import { signMessage } from "./utils";
 
 const PORT = process.env.PORT || 3210;
 
-const BOB_PRIVATE_KEY = process.env.PRIVATE_KEY;
 
-const selectedWallet = new Wallet(BOB_PRIVATE_KEY!);
 
 const ensCache = new Map<string, string>();
 
@@ -38,9 +36,6 @@ const main = async () => {
   const inputs = {
     startTimestamp: 1,
   };
-
-  const signature = await signMessage(selectedWallet, StartGameSchema, inputs);
-  console.log(signature);
 
   const app = express();
   app.use(express.json({ limit: "50mb" }));
