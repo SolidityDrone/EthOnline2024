@@ -11,3 +11,25 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Very high z-index */
+}
+
+.modal-content {
+  background: #1e293b; /* Or your desired background color */
+  border: 2px solid #60a5fa; /* Border color */
+  border-radius: 0.5rem; /* Rounded corners */
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); /* Shadow effect */
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 10000; /* Ensure it's on top of the overlay */
+}

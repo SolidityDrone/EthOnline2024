@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
-
+import avail_logo  from "@/assets/icons/avail.png"
+import tia_logo from "@/assets/icons/celestia.png"
 // Define types for history data and modal props
 type Game = {
     id: string;
@@ -32,14 +33,14 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
         <div>
             <button
                 onClick={toggleModal}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="px-4 py-2 bg-sky-700 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-                View Games
+                Games
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10 p-4">
-                    <div className="bg-sky-950 border-2 border-blue-400 rounded-lg shadow-[0_0_15px_rgba(59,130,246,0.5)] w-full max-w-[90%] sm:max-w-[80%] md:max-w-[80%] lg:max-w-[80%] max-h-[90vh] flex flex-col">
+                <div className="modal-overlay">
+                    <div className="modal-content">
                         <div className="p-4 border-b border-blue-700 flex justify-between items-center">
                             <h2 className="text-2xl font-bold text-white">Match history</h2>
                             <button
@@ -53,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
                         </div>
                         <div className="overflow-x-auto flex-grow">
                             <table className="min-w-full divide-y divide-gray-200 bg-sky-900 text-white">
-                                <thead className="bg-blue-800">
+                                <thead className="bg-sky-800">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Score</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Block Status</th>
@@ -75,8 +76,11 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="text-blue-400 hover:underline"
-                                                    >
-                                                        {formatHash(game.celestiaTxHash)}
+                                                    ><span className='flex items-center'>
+                                                          <img src={tia_logo.src} alt="Celestia Logo" className="w-4 h-4 mr-2" />
+                                                          {formatHash(game.celestiaTxHash)}
+                                                    </span>
+                                                     
                                                     </a>
                                                 ) : game.availTxHash ? (
                                                     <a
@@ -85,20 +89,25 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
                                                         rel="noopener noreferrer"
                                                         className="text-blue-400 hover:underline"
                                                     >
-                                                        {formatHash(game.availTxHash)}
+                                                       <span className="flex items-center">
+    <img src={avail_logo.src} alt="Avail Logo" className="w-4 h-4 mr-2" />
+    {formatHash(game.availTxHash)}
+</span>
                                                     </a>
                                                 ) : (
                                                     'N/A'
                                                 )}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">  <a
-                                                href={`https://sepolia.etherscan.io/tx/${game.l1TransactionHash}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-400 hover:underline"
-                                            >{formatHash(game.l1TransactionHash) ?? 'not finalized'}</a></td>
-
-
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <a
+                                                    href={`https://sepolia.etherscan.io/tx/${game.l1TransactionHash}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-400 hover:underline"
+                                                >
+                                                    {formatHash(game.l1TransactionHash) ?? 'not finalized'}
+                                                </a>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -112,17 +121,21 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
 };
 
 // Define types for the history data
-interface DAMetadata {
+interface CELESTIA_METADATA {
     blockHeight: number;
     txHash: string;
-    commitment: string;
+}
+
+interface AVAIL_METADATA {
+    blockHeight: number;
+    extIdx: number;
 }
 
 interface BlockInfo {
     status: string;
     daMetadata?: {
-        celestia?: DAMetadata;
-        avail?: DAMetadata;
+        celestia?: CELESTIA_METADATA;
+        avail?: AVAIL_METADATA;
     };
     l1TxHash?: string;
 }
@@ -151,7 +164,7 @@ const History: React.FC = () => {
                 setHistory(data);
             } catch (err) {
                 setError('Failed to fetch history');
-            } 
+            }
         };
 
         if (address) {
@@ -168,7 +181,7 @@ const History: React.FC = () => {
         hash: entry.hash,
         blockStatus: entry.blockInfo?.status || 'unknown',
         celestiaTxHash: entry.blockInfo?.daMetadata?.celestia?.txHash,
-        availTxHash: entry.blockInfo?.daMetadata?.avail?.txHash,
+        availTxHash: entry.blockInfo?.daMetadata?.avail?.blockHeight+"-"+ entry.blockInfo?.daMetadata?.avail?.extIdx,
         l1TransactionHash: entry.blockInfo?.l1TxHash,
     }));
 

@@ -109,7 +109,6 @@ export function UnityPlayerApp() {
   return (
     <>
       <div id="unity-container" className="unity-desktop">
-        <h1>Game ID: {game || "No game started"}</h1>
 
         {!isLoaded && (
           <div id="unity-loading-bar">
@@ -119,21 +118,12 @@ export function UnityPlayerApp() {
             </div>
           </div>
         )}
-        <div id="unity-warning"></div>
-        <div id="unity-footer">
-          <div id="unity-webgl-logo"></div>
-          <div id="unity-fullscreen-button"></div>
-          <div id="unity-build-title">Verifiable Kartik Adventures</div>
-        </div>
-
-        <button onClick={handleClickStartGame} style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
-          Start Game
-        </button>
-      </div>
-      <Unity
+        <Unity
         unityProvider={unityProvider}
-        className="w-full h-full"
+        className="unity-player z-0"
       />
+      </div>
+     
     </>
   );
 }

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 // Define the types for the leaderboard data
 interface LeaderboardEntry {
-  player: string;
+  address: string;
   score: number;
 }
 
@@ -18,16 +18,16 @@ const LeaderboardModal: React.FC<{ leaderboard: LeaderboardEntry[] }> = ({ leade
     <div>
       <button
         onClick={toggleModal}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        className="px-4 py-2 bg-sky-700 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
       >
-        View Leaderboard
+        Leaderboard
       </button>
 
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
           <div className="bg-sky-950 border-2 border-blue-400 rounded-lg shadow-[0_0_15px_rgba(59,130,246,0.5)] w-full max-w-[90%] sm:max-w-[80%] md:max-w-[60%] lg:max-w-[40%] max-h-[90vh] flex flex-col">
             <div className="p-4 border-b border-blue-700 flex justify-between items-center">
-          
+              <h2 className="text-2xl font-bold text-white">Leaderboard</h2>
               <button
                 onClick={toggleModal}
                 className="text-white hover:text-blue-300 focus:outline-none"
@@ -38,15 +38,25 @@ const LeaderboardModal: React.FC<{ leaderboard: LeaderboardEntry[] }> = ({ leade
               </button>
             </div>
             <div className="overflow-y-auto flex-grow">
-              <div className="p-4 space-y-4">
-                <ul className="list-decimal pl-5">
-                  {leaderboard.map((entry, index) => (
-                    <li key={index} className="mb-2">
-                      <span className="font-medium">{index + 1}. Player:</span> {entry.player}, <span className="font-medium">Score:</span> {entry.score}
-                    </li>
+              <table className="min-w-full divide-y divide-gray-200 bg-sky-900 text-white">
+                <thead className="bg-sky-800">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Player</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Score</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+
+                  {leaderboard.map((entry, index) => (<>
+                    <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{entry.address}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{entry.score}</td>
+
+                  </>
                   ))}
-                </ul>
-              </div>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -72,7 +82,7 @@ const Leaderboard: React.FC = () => {
         setLeaderboard(data);
       } catch (err) {
         setError('Failed to fetch leaderboard');
-      } 
+      }
     };
 
     fetchLeaderboard();

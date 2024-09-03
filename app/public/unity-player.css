@@ -4,19 +4,38 @@ body {
     margin: 0;
   }
   
-  /* Base styles for the Unity container */
   #unity-container {
-    position: absolute; /* Allows for absolute positioning */
-    left: 50%;
+    position: absolute; /* Absolute positioning to ensure it occupies the full viewport */
     top: 50%;
-    transform: translate(-50%, -50%); /* Centers the container */
+    left: 50%;
+    width: 80vw; /* Width as a percentage of viewport width */
+    height: 80vh; /* Let the height adjust based on width */
+    transform: translate(-50%, -50%); /* Centering the container */
+    z-index: 1; /* Ensure it's below the modal */
+    overflow: hidden; /* Hide overflow to prevent content from spilling out */
+    background: #000; /* Optional: background color */
+    border-radius: 40px;
+    border-width: 2px;
+    border-color: #60a5fa;
+  }
+  
+  /* Styles for the Unity player */
+  .unity-player {
+    width: 100%;
+    height: auto; /* Adjust height based on width */
+    aspect-ratio: 16 / 9; /* Enforce 16:9 aspect ratio */
+    max-width: 100%;
+    max-height: 100%;
+    display: block; /* Ensure it behaves as a block element */
+    margin: 0 auto; /* Center the Unity player inside its container */
   }
   
   /* Styles specific to desktop view */
   .unity-desktop {
-    position: absolute;
+    position: relative; /* Ensure positioning is relative to its parent */
+    width: 100%;
+    height: 100%;
   }
-  
   /* Styles specific to mobile view */
   .unity-mobile {
     position: fixed;
