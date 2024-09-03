@@ -65,7 +65,7 @@ export function UnityPlayerApp() {
   const handleGameOver = useCallback((...parameters: any) => {
     const [score, stages, inputs] = parameters;
     setEndGameParams({
-      score: Number(score), // Ensure these are correctly converted
+      score: Number(score),
       stages: String(stages),
       inputs: String(inputs),
     });
@@ -77,13 +77,23 @@ export function UnityPlayerApp() {
     }
   }, [endGameParams]);
 
-  async function handleClickStartGame() {
-    try {
-      await handleStartGame();
-    } catch (error) {
-      console.error("Error starting game:", error);
-    }
-  }
+  // Ref to the start game button
+  const startGameButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        console.log("Enter Key Pressed");
+        if (startGameButtonRef.current) {
+          startGameButtonRef.current.click(); // Simulate button click, this due to having problems making it work into handleStartGame idk
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   useEffect(() => {
     addEventListener("SendResult", handleGameOver);
@@ -109,7 +119,6 @@ export function UnityPlayerApp() {
   return (
     <>
       <div id="unity-container" className="unity-desktop">
-
         {!isLoaded && (
           <div id="unity-loading-bar">
             <div id="unity-logo"></div>
@@ -119,11 +128,11 @@ export function UnityPlayerApp() {
           </div>
         )}
         <Unity
-        unityProvider={unityProvider}
-        className="unity-player z-0"
-      />
+          unityProvider={unityProvider}
+          className="unity-player z-0"
+        />
       </div>
-     
+      <button ref={startGameButtonRef} onClick={handleStartGame} className="hidden">Start Game</button>
     </>
   );
 }

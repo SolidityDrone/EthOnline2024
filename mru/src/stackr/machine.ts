@@ -62,7 +62,7 @@ export class AppState extends State<RawState, WrappedState> {
   }
 }
 
-const MACHINE_ID = "worldEngine";
+const MACHINE_ID = "game_machine";
 const machine = new StateMachine({
   id: MACHINE_ID,
   stateClass: AppState,
