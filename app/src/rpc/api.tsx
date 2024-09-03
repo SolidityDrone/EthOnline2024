@@ -1,7 +1,6 @@
-const API_URL = "http://localhost:3210";
 
 const submitAction = async (transition: string, payload: any) => {
-  const response = await fetch(`${API_URL}/${transition}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_STACKR_URL}/${transition}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +13,7 @@ const submitAction = async (transition: string, payload: any) => {
 
 const fetchInfo = async () => {
   try {
-    const response = await fetch(`${API_URL}/info`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_STACKR_URL}/info`);
     if (!response.ok) {
       throw new Error(`Failed to fetch info: ${response.statusText}`);
     }
