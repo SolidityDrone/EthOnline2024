@@ -144,6 +144,7 @@ interface HistoryEntry {
     gameId: string;
     score: string;
     hash: string;
+    player: string;  // Add the player field here
     blockInfo: BlockInfo | null;
 }
 
@@ -173,18 +174,20 @@ const History: React.FC = () => {
     }, [address]);
 
 
-
-    // Map history data to the format expected by the Modal component
+    
     const games: Game[] = history.map((entry) => ({
         id: entry.gameId,
-        score: entry.score,
+        score: parseFloat(entry.score), // Convert the score to a number
         hash: entry.hash,
+        player: entry.player, // Ensure player is correctly mapped
         blockStatus: entry.blockInfo?.status || 'unknown',
         celestiaTxHash: entry.blockInfo?.daMetadata?.celestia?.txHash,
-        availTxHash: entry.blockInfo?.daMetadata?.avail?.blockHeight+"-"+ entry.blockInfo?.daMetadata?.avail?.extIdx,
+        availTxHash: entry.blockInfo?.daMetadata?.avail
+            ? `${entry.blockInfo.daMetadata.avail.blockHeight}-${entry.blockInfo.daMetadata.avail.extIdx}`
+            : undefined,
         l1TransactionHash: entry.blockInfo?.l1TxHash,
     }));
-
+    
     return (
         <div className="p-4">
             {/* Pass the games data to the Modal */}
