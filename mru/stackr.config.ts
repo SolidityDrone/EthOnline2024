@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const stackrConfig: StackrConfig = {
-  isSandbox: true, 
+  isSandbox: false, 
   sequencer: {
     blockSize: 16,
     blockTime: 10,
@@ -32,7 +32,7 @@ const stackrConfig: StackrConfig = {
     uri: process.env.DATABASE_URI as string,
   },
   registryContract: process.env.REGISTRY_CONTRACT as string,
-  preferredDA: DA.AVAIL,
+  preferredDA: DA.CELESTIA,
   logLevel: "log",
 };
 

@@ -30,18 +30,18 @@ export const useAction = () => {
   const submit = async (transition: string, inputs: any) => {
     console.log("Submit function triggered for transition:");
     const schema = schemas[transition];
-
+    
     if (!schema) {
       console.error(`Schema for transition "${transition}" not found.`);
       return;
     }
 
     const { primaryType, types } = schema;
-    console.log("schema", schema)
+
 
     const message = { ...inputs };
-    console.log("coddio", message)
-
+  
+    
     let signature;
     try {
       signature = await signTypedDataAsync({

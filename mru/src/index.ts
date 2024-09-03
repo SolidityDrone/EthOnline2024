@@ -103,7 +103,8 @@ const main = async () => {
     return [...players];
   };
 
-  app.get("/games", async (_req, res) => {
+  app.get("/history", async (_req, res) => {
+    const { address } = _req.query;
     const actionsAndBlocks = await mru.actions.query(
       {
         name: "endGame",
@@ -124,12 +125,13 @@ const main = async () => {
     const games = actionsAndBlocks.map((actionAndBlock) => {
       const { hash, block, payload } = actionAndBlock;
       const { gameId, height } = payload;
-      const player = stateMachine.wrappedState.games[Number(gameId)].player;
+      const player = stateMachine.wrappedState.games[String(gameId)].player;
+      const score = stateMachine.wrappedState.games[String(gameId)].score;
       return {
         gameId,
-        height,
         player: ensCache.get(player) || player,
         hash,
+        score,
         blockInfo: block
           ? {
               status: block.status,
@@ -138,39 +140,39 @@ const main = async () => {
             }
           : null,
       };
-    });
-
+    }).filter((game) => !address || game.player.toLowerCase() === address.toString().toLowerCase());
+    
     return res.send(games);
   });
 
-  // Define /info route
-
   // Define /leaderboard route
   app.get("/leaderboard", async (_req, res) => {
-    // const { state } = stateMachine;
-    // const sortedheights = [...state.games].sort((a, b) => b.height - a.height);
+    const { state } = stateMachine;
+    const sortedheights = [...state.games].sort((a, b) => b.score - a.score);
 
-    // const players = new Set<string>();
+    const players = new Set<string>();
 
-    // const topTen = sortedheights
-    //   .filter((game) => {
-    //     if (players.has(game.player)) {
-    //       return false;
-    //     }
-    //     players.add(game.player);
-    //     return true;
-    //   })
-    //   .slice(0, 10);
+    const topTen = sortedheights
+      .filter((game) => {
+        if (players.has(game.player)) {
+          return false;
+        }
+        players.add(game.player);
+        return true;
+      })
+      .slice(0, 10);
 
-    // const leaderboard = await Promise.all(
-    //   topTen.map(async (game) => ({
-    //     address: game.player,
-    //     height: game.height,
-    //   }))
-    // );
+    const leaderboard = await Promise.all(
+      topTen.map(async (game) => ({
+        address: game.player,
+        score: game.score,
+      }))
+    );
 
-    // return res.json(leaderboard);
+    return res.json(leaderboard);
   });
+
+
   app.get("/info", (_, res) => {
     const transitionToSchema = mru.getStfSchemaMap();
     return res.send({
@@ -187,7 +189,7 @@ const main = async () => {
       }, {} as Record<string, any>),
     });
   });
-  // Start the server
+
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
