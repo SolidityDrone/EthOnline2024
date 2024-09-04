@@ -38,26 +38,25 @@ const LeaderboardModal: React.FC<{ leaderboard: LeaderboardEntry[] }> = ({ leade
               </button>
             </div>
             <div className="overflow-y-auto flex-grow">
-              <table className="min-w-full divide-y divide-gray-200 bg-sky-900 text-white">
-                <thead className="bg-sky-800">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Player</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Score</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-700">
-
-                  {leaderboard.map((entry, index) => (<>
-                    <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{entry.address}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{entry.score}</td>
-
-                  </>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+  <table className="min-w-full divide-y divide-gray-200 bg-sky-900 text-white">
+    <thead className="bg-sky-800">
+      <tr>
+        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">#</th>
+        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Player</th>
+        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Score</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-gray-700">
+      {leaderboard.map((entry, index) => (
+        <tr key={index}>
+          <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{entry.address}</td>
+          <td className="px-6 py-4 whitespace-nowrap">{entry.score}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
           </div>
         </div>
       )}

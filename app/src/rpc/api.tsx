@@ -13,15 +13,16 @@ const submitAction = async (transition: string, payload: any) => {
 
 const fetchInfo = async () => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_STACKR_URL}/info`);
+    const url = `${process.env.NEXT_PUBLIC_STACKR_URL}/info`;
+    console.log("Fetching from URL:", url);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch info: ${response.statusText}`);
     }
     return await response.json();
   } catch (error) {
     console.error("Error fetching info:", error);
-    throw error; // Rethrow to handle it where this function is used
+    throw error;
   }
 };
-
 export { submitAction, fetchInfo };

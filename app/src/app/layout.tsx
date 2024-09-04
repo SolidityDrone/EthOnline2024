@@ -9,6 +9,7 @@ import { WALLETCONNECT_CONFIG } from '@/utils/web3'
 import { headers } from 'next/headers'
 import '../assets/globals.css'
 
+
 export const metadata: Metadata = {
   applicationName: SITE_NAME,
   title: {
@@ -54,9 +55,12 @@ export default function RootLayout(props: PropsWithChildren) {
       </head>
 
       <body>
-        <Web3Provider initialState={initialState}>
+
+      <Web3Provider initialState={initialState}>
           <Layout>{props.children}</Layout>
-        </Web3Provider>
+      </Web3Provider>
+
+    
       </body>
     </html>
   )

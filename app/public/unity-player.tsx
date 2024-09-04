@@ -20,20 +20,22 @@ export function UnityPlayerApp() {
   const loadingPercentage = Math.round(loadingProgression * 100);
 
   const handleStartGame = async () => {
-    setPlaying(true);
-    try {
-      const res = await submit("startGame", {
-        startTimestamp: Date.now(),
-      });
-      
-      const gameValue = res?.logs?.[0]?.value;
-      if (gameValue) {
-        sendMessage("Game_Manager", "StartGame", "hello");
+    if (!playing) {
+      try {
+        const res = await submit("startGame", {
+          startTimestamp: Date.now(),
+        });
+
+        const gameValue = res?.logs?.[0]?.value;
+        if (gameValue) {
+          sendMessage("Game_Manager", "StartGame", "hello");
+        }
+        setGame(gameValue);
+        setPlaying(true);
+        gameRef.current = gameValue;
+      } catch (error) {
+        console.error("Error during game start:", error);
       }
-      setGame(gameValue);
-      gameRef.current = gameValue;
-    } catch (error) {
-      console.error("Error during game start:", error);
     }
   };
 
@@ -55,9 +57,11 @@ export function UnityPlayerApp() {
         stages: stages,
         inputs: inputs,
       });
+      sendMessage("Game_Manager", "Signed", "hello");
       console.log("After submit endgame", res);
     } catch (error) {
       console.error("Error during game end:", error);
+      sendMessage("Game_Manager", "SignedRefusedOrErrored", "hello");
     }
     setPlaying(false);
   };

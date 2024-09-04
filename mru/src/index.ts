@@ -33,10 +33,6 @@ const mru = await MicroRollup({
 const main = async () => {
   await mru.init();
 
-  const inputs = {
-    startTimestamp: 1,
-  };
-
   const app = express();
   app.use(express.json({ limit: "50mb" }));
   
@@ -90,13 +86,6 @@ const main = async () => {
     }
   });
 
-  const getUniquePlayers = (games: typeof stateMachine.state.games) => {
-    const players = new Set<string>();
-    for (const game of games) {
-      players.add(game.player);
-    }
-    return [...players];
-  };
 
   app.get("/history", async (_req, res) => {
     const { address } = _req.query;

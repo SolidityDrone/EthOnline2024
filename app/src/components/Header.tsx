@@ -20,6 +20,7 @@ export function Header() {
       </div>
       
       <div className="flex gap-2 items-center">
+
         <Connect />
       </div>
     </header>

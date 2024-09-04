@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
-import avail_logo  from "@/assets/icons/avail.png"
+import avail_logo from "@/assets/icons/avail.png"
 import tia_logo from "@/assets/icons/celestia.png"
 // Define types for history data and modal props
 type Game = {
@@ -77,10 +77,10 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
                                                         rel="noopener noreferrer"
                                                         className="text-blue-400 hover:underline"
                                                     ><span className='flex items-center'>
-                                                          <img src={tia_logo.src} alt="Celestia Logo" className="w-4 h-4 mr-2" />
-                                                          {formatHash(game.celestiaTxHash)}
-                                                    </span>
-                                                     
+                                                            <img src={tia_logo.src} alt="Celestia Logo" className="w-4 h-4 mr-2" />
+                                                            {formatHash(game.celestiaTxHash)}
+                                                        </span>
+
                                                     </a>
                                                 ) : game.availTxHash ? (
                                                     <a
@@ -89,10 +89,10 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
                                                         rel="noopener noreferrer"
                                                         className="text-blue-400 hover:underline"
                                                     >
-                                                       <span className="flex items-center">
-    <img src={avail_logo.src} alt="Avail Logo" className="w-4 h-4 mr-2" />
-    {formatHash(game.availTxHash)}
-</span>
+                                                        <span className="flex items-center">
+                                                            <img src={avail_logo.src} alt="Avail Logo" className="w-4 h-4 mr-2" />
+                                                            {formatHash(game.availTxHash)}
+                                                        </span>
                                                     </a>
                                                 ) : (
                                                     'N/A'
@@ -174,7 +174,7 @@ const History: React.FC = () => {
     }, [address]);
 
 
-    
+
     const games: Game[] = history.map((entry) => ({
         id: entry.gameId,
         score: parseFloat(entry.score), // Convert the score to a number
@@ -187,7 +187,7 @@ const History: React.FC = () => {
             : undefined,
         l1TransactionHash: entry.blockInfo?.l1TxHash,
     }));
-    
+
     return (
         <div className="p-4">
             {/* Pass the games data to the Modal */}
