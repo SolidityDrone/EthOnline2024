@@ -44,6 +44,7 @@ export function UnityPlayerApp() {
       console.error("End game parameters are not set.");
       return;
     }
+    setPlaying(false);
     const { score, stages, inputs } = endGameParams;
     console.log("handleEndGame called with:", { score, stages, inputs });
     console.log("GameId at Game Over:", gameRef.current);
@@ -63,7 +64,7 @@ export function UnityPlayerApp() {
       console.error("Error during game end:", error);
       sendMessage("Game_Manager", "SignedRefusedOrErrored", "hello");
     }
-    setPlaying(false);
+    
   };
 
   const handleGameOver = useCallback((...parameters: any) => {
