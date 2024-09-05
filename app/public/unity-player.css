@@ -5,19 +5,26 @@ body {
   }
   
   #unity-container {
-    position: absolute; /* Absolute positioning to ensure it occupies the full viewport */
+    position: absolute;
     top: 50%;
     left: 50%;
-    width: 80vw; /* Width as a percentage of viewport width */
-    height: 80vh; /* Let the height adjust based on width */
-    transform: translate(-50%, -50%); /* Centering the container */
-    z-index: 1; /* Ensure it's below the modal */
-    overflow: hidden; /* Hide overflow to prevent content from spilling out */
-    background: #000; /* Optional: background color */
+    width: 80vw !important;
+    height: 80vh !important;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    overflow: hidden;
+    background: #000;
     border-radius: 40px;
     border-width: 2px;
-    border-color: #60a5fa;
+    border-color: #60a5faf1 !important;
+    transition: width 1.5s ease, height 1.5s ease, border-color 1.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;      
   }
+  
+
+  
   
   /* Styles for the Unity player */
   .unity-player {
@@ -50,9 +57,6 @@ body {
   
   /* Loading bar styles */
   #unity-loading-bar {
-    position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
     display: none; /* Initially hidden, shown when loading */
   }

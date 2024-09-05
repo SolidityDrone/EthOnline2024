@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({ games }) => {
                 onClick={toggleModal}
                 className="px-4 py-2 bg-sky-700 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-                Games
+                Past games
             </button>
 
             {isOpen && (
@@ -144,12 +144,12 @@ interface HistoryEntry {
     gameId: string;
     score: string;
     hash: string;
-    player: string;  // Add the player field here
+    player: string;  
     blockInfo: BlockInfo | null;
 }
 
 const History: React.FC = () => {
-    const { address } = useAccount(); // Get the logged address from wagmi
+    const { address } = useAccount(); 
     const [history, setHistory] = useState<HistoryEntry[]>([]);
 
     const [error, setError] = useState<string | null>(null);
@@ -167,12 +167,17 @@ const History: React.FC = () => {
                 setError('Failed to fetch history');
             }
         };
-
+    
         if (address) {
-            fetchHistory();
+            fetchHistory(); // Fetch initially when the component mounts
+    
+            const interval = setInterval(() => {
+                fetchHistory(); // Fetch every 5 seconds
+            }, 3000); // 5000ms = 5 seconds
+    
+            return () => clearInterval(interval); // Clean up the interval when component unmounts
         }
     }, [address]);
-
 
 
     const games: Game[] = history.map((entry) => ({
@@ -190,7 +195,6 @@ const History: React.FC = () => {
 
     return (
         <div className="p-4">
-            {/* Pass the games data to the Modal */}
             <Modal games={games} />
         </div>
     );

@@ -2,12 +2,15 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 import "./unity-player.css";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useAction } from "@/app/useAction";
-
+import { Connect } from "@/components/Connect";
+import { useAccount } from "wagmi";
 export function UnityPlayerApp() {
   const [playing, setPlaying] = useState(false);
   const [game, setGame] = useState<string>('');
   const [endGameParams, setEndGameParams] = useState<{ score: number; stages: string; inputs: string } | null>(null);
   const gameRef = useRef<string>('');
+  
+  const {address} = useAccount();
   const { submit } = useAction();
 
   const { unityProvider, isLoaded, loadingProgression, addEventListener, sendMessage } = useUnityContext({
@@ -19,8 +22,10 @@ export function UnityPlayerApp() {
 
   const loadingPercentage = Math.round(loadingProgression * 100);
 
+
+
   const handleStartGame = async () => {
-    if (!playing) {
+  
       try {
         const res = await submit("startGame", {
           startTimestamp: Date.now(),
@@ -36,7 +41,7 @@ export function UnityPlayerApp() {
       } catch (error) {
         console.error("Error during game start:", error);
       }
-    }
+ 
   };
 
   const handleEndGame = async () => {
@@ -123,21 +128,29 @@ export function UnityPlayerApp() {
 
   return (
     <>
-      <div id="unity-container" className="unity-desktop">
+      <div id="unity-container" className="unity-conatiner-transition">
+      {
+        !address && (<Connect />)
+      }
         {!isLoaded && (
           <div id="unity-loading-bar">
             <div id="unity-logo"></div>
             <div id="unity-progress-bar-empty">
-              <div id="unity-progress-bar-full" style={{ width: `${loadingPercentage}%` }}></div>
+              <div id="unity-progress-bar-full" style={{ width: `${loadingPercentage}%` }}>
+             
+              </div>
             </div>
           </div>
         )}
-        <Unity
-          unityProvider={unityProvider}
-          className="unity-player z-0"
-        />
+       
+        {address && (
+          <Unity
+            unityProvider={unityProvider}
+            className="unity-player z-0"
+          />
+        )}
       </div>
       <button ref={startGameButtonRef} onClick={handleStartGame} className="hidden">Start Game</button>
     </>
   );
-}
+};

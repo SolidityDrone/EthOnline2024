@@ -84,7 +84,14 @@ const Leaderboard: React.FC = () => {
       }
     };
 
-    fetchLeaderboard();
+      fetchLeaderboard();; // Fetch immediately on mount
+
+      const intervalId = setInterval( fetchLeaderboard, 5000); // Set the interval to every 5 seconds
+
+      // Clear the interval when the component unmounts
+      return () => clearInterval(intervalId);
+  
+   
   }, []);
 
 
